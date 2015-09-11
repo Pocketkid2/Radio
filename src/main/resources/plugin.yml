@@ -1,0 +1,13 @@
+name: Radio
+main: com.github.pocketkid2.radio.RadioPlugin
+version: 0.1.0
+author: Pocketkid2
+description: Broadcast messages over a frequency network!
+commands:
+    radio:
+        description: Main command
+        usage: /<command> [frequency|broadcast|on|off] [number|message]
+permissions:
+    radio.use:
+        description: Allows you to use a radio. This includes broadcasting, recieving, and changing values about your radio.
+        default: true

@@ -1,0 +1,10 @@
+# What prefix should be in front of a radio broadcast message?
+# Use %s to represent playername
+prefix: "[Radio: %s] "
+
+# List of radio tiers
+radios:
+    # Format is tier: radius
+    1: 1000
+    2: 3000
+    3: 10000

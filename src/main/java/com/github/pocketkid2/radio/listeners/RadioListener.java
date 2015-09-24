@@ -1,16 +1,12 @@
 package com.github.pocketkid2.radio.listeners;
 
-import java.util.List;
-
-import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.CraftingInventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import com.github.pocketkid2.radio.RadioPlugin;
 import com.github.pocketkid2.radio.util.Radio;
@@ -37,6 +33,13 @@ public class RadioListener implements Listener {
 	}
 
 	@EventHandler
+	public void onPlace(BlockPlaceEvent event) {
+		if (Radio.isRadio(event.getItemInHand())) {
+			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {
 		// Check for right click
 		if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
@@ -44,25 +47,12 @@ public class RadioListener implements Listener {
 			if (event.hasItem()) {
 				// Check for radio
 				if (Radio.isRadio(event.getItem())) {
-					// Get item
-					ItemStack stack = event.getItem();
-					boolean state;
-					// Check current state
-					if (stack.getType() == Material.REDSTONE_LAMP_ON) {
-						// Set it to off
-						stack.setType(Material.REDSTONE_LAMP_OFF);
-						state = false;
+					// Decide whether we are turning on or off
+					if (Radio.getState(event.getItem())) {
+						event.getPlayer().performCommand("radio off");
 					} else {
-						// Set it to on
-						stack.setType(Material.REDSTONE_LAMP_ON);
-						state = true;
+						event.getPlayer().performCommand("radio on");
 					}
-					// Now manipulate the meta
-					ItemMeta meta = stack.getItemMeta();
-					List<String> lore = meta.getLore();
-					lore.set(3, Radio.getStateString(state));
-					meta.setLore(lore);
-					stack.setItemMeta(meta);
 				}
 			}
 		}

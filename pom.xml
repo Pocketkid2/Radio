@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.pocketkid2</groupId>
 	<artifactId>Radio</artifactId>
-	<version>0.1.0</version>
+	<version>0.1.1</version>
 	<name>Radio</name>
 	<description>Send messages to other players on your frequency!</description>
 	<properties>

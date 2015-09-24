@@ -33,7 +33,7 @@ public class RadioPlugin extends JavaPlugin {
 			}
 		}
 		// Set the prefix
-		Settings.prefix = getConfig().getString("prefix");
+		Settings.format = getConfig().getString("broadcast-format");
 		// Create recipe
 		Settings.recipe = new ShapedRecipe(Radio.createRadio(1));
 		Settings.recipe.shape(" g ", "bli", "rrr");

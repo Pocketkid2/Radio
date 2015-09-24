@@ -12,6 +12,6 @@ public class Settings {
 
 	public static int maxTier;
 
-	public static String prefix;
+	public static String format;
 
 }

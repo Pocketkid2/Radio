@@ -1,6 +1,6 @@
 # What prefix should be in front of a radio broadcast message?
 # Use %s to represent playername
-prefix: "[Radio: %s] "
+prefix: "[&4&lRadio &4&lMessage &4&lFrom: %s] "
 
 # List of radio tiers
 radios:

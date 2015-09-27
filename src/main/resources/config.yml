@@ -2,7 +2,7 @@
 # The first %s will be the playername
 # The second %s will be the message
 # Supports '&' colors (http://ess.khhq.net/mc/)
-broadcast-format: "[&3Radio:&r %s] &7%s"
+broadcast-format: "[&9&l&nRadio:&r %s] &1%s"
 
 # List of radio tiers
 radios:

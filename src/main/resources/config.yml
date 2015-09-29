@@ -1,12 +1,13 @@
-# What prefix should be in front of a radio broadcast message?
-# The first %s will be the playername
-# The second %s will be the message
-# Supports '&' colors (http://ess.khhq.net/mc/)
-broadcast-format: "[&3Radio:&r %s] &7%s"
-
-# List of radio tiers
-radios:
+# List of radio tiers and their respective radiuses
+radiuses:
     # Format is tier: radius
     1: 1000
     2: 3000
     3: 10000
+    
+# List of radio tiers and their respective colors
+colors:
+    # Format is tier: COLOR_NAME
+    1: YELLOW
+    2: LIGHT_PURPLE
+    3: RED

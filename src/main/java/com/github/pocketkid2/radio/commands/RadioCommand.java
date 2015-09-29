@@ -12,17 +12,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.github.pocketkid2.radio.RadioPlugin;
 import com.github.pocketkid2.radio.util.Radio;
-import com.github.pocketkid2.radio.util.Settings;
 
 public class RadioCommand implements CommandExecutor {
-
-	private RadioPlugin plugin;
-
-	public RadioCommand(RadioPlugin pl) {
-		plugin = pl;
-	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -62,6 +54,7 @@ public class RadioCommand implements CommandExecutor {
 			}
 			setFrequency(player, args[1]);
 			return true;
+		case "bc":
 		case "broadcast":
 			broadcast(player, Arrays.copyOfRange(args, 1, args.length));
 			return true;
@@ -97,6 +90,7 @@ public class RadioCommand implements CommandExecutor {
 		if (Radio.getState(stack)) {
 			// Set the item and lore
 			ItemMeta meta = stack.getItemMeta();
+			meta.setDisplayName(Radio.getTitle(Radio.getTier(stack), false));
 			List<String> lore = meta.getLore();
 			lore.set(3, Radio.getStateString(false));
 			meta.setLore(lore);
@@ -112,6 +106,7 @@ public class RadioCommand implements CommandExecutor {
 		if (!Radio.getState(stack)) {
 			// Set the item and lore
 			ItemMeta meta = stack.getItemMeta();
+			meta.setDisplayName(Radio.getTitle(Radio.getTier(stack), true));
 			List<String> lore = meta.getLore();
 			lore.set(3, Radio.getStateString(true));
 			meta.setLore(lore);
@@ -128,7 +123,8 @@ public class RadioCommand implements CommandExecutor {
 			return;
 		}
 		// Get the message
-		String message = ChatColor.translateAlternateColorCodes('&', String.format(Settings.format, player.getName(), String.join(" ", args)));
+		String message = String.format("&r[%s&r: %s&r] &7%s", player.getItemInHand().getItemMeta().getDisplayName(), player.getName(), String.join(" ", args));
+		message = ChatColor.translateAlternateColorCodes('&', message);
 		// Get the radius
 		int radius = Radio.getRadius(player.getItemInHand());
 		// Send the message

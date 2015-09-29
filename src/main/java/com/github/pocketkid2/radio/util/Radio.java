@@ -23,13 +23,13 @@ public class Radio {
 
 	public static ItemStack createRadio(int tier, boolean state, int frequency) {
 		// Check that the tier exists
-		if (Settings.radios.containsKey(tier)) {
+		if (Settings.radiuses.containsKey(tier)) {
 			// Make the item
 			ItemStack stack = new ItemStack(state ? Material.REDSTONE_LAMP_ON : Material.REDSTONE_LAMP_OFF);
 			// Create the meta
 			ItemMeta meta = stack.getItemMeta();
 			// Set the name
-			meta.setDisplayName(ChatColor.RESET + "" + ChatColor.BOLD + "Radio");
+			meta.setDisplayName(getTitle(tier, state));
 			// Set the lores
 			List<String> lores = Arrays.asList(getTierString(tier), getRadiusString(tier), getFrequencyString(frequency), getStateString(state));
 			meta.setLore(lores);
@@ -38,6 +38,10 @@ public class Radio {
 			return stack;
 		}
 		return null;
+	}
+
+	public static String getTitle(int tier, boolean state) {
+		return Settings.colors.get(tier) + "" + (state ? ChatColor.BOLD : "") + "Radio";
 	}
 
 	public static boolean isRadio(ItemStack stack) {
@@ -124,7 +128,7 @@ public class Radio {
 	 * @return
 	 */
 	public static String getRadiusString(int tier) {
-		return String.format(ChatColor.GRAY + "Radius: " + ChatColor.BLUE + "%d", Settings.radios.get(tier));
+		return String.format(ChatColor.GRAY + "Radius: " + ChatColor.BLUE + "%d", Settings.radiuses.get(tier));
 	}
 
 	/**

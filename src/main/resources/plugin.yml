@@ -1,6 +1,6 @@
 name: Radio
 main: com.github.pocketkid2.radio.RadioPlugin
-version: 0.1.1
+version: 0.1.2
 author: Pocketkid2
 description: Broadcast messages over a frequency network!
 commands:

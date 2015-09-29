@@ -8,17 +8,10 @@ import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.CraftingInventory;
 
-import com.github.pocketkid2.radio.RadioPlugin;
 import com.github.pocketkid2.radio.util.Radio;
 import com.github.pocketkid2.radio.util.Settings;
 
 public class RadioListener implements Listener {
-
-	private RadioPlugin plugin;
-
-	public RadioListener(RadioPlugin pl) {
-		plugin = pl;
-	}
 
 	@EventHandler
 	public void onCraft(PrepareItemCraftEvent event) {

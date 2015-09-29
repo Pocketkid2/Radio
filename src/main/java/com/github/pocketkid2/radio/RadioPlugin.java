@@ -3,6 +3,7 @@ package com.github.pocketkid2.radio;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -14,26 +15,31 @@ import com.github.pocketkid2.radio.util.Settings;
 
 public class RadioPlugin extends JavaPlugin {
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void onEnable() {
 		// Load values from config
 		saveDefaultConfig();
-		// Initialize map
-		Settings.radios = new HashMap<Integer, Integer>();
-		// Get map from config
-		Map<String, Object> map = getConfig().getConfigurationSection("radios").getValues(false);
+		// Initialize maps
+		Settings.radiuses = new HashMap<Integer, Integer>();
+		Settings.colors = new HashMap<Integer, ChatColor>();
+		// Get radius map
+		Map<String, Object> map = getConfig().getConfigurationSection("radiuses").getValues(false);
 		for (String s : map.keySet()) {
 			// Check that the key and the value are both integers
 			if (s.matches("^-?\\d+$") && map.get(s) instanceof Integer) {
-				Settings.radios.put(Integer.parseInt(s), (Integer) map.get(s));
+				Settings.radiuses.put(Integer.parseInt(s), (Integer) map.get(s));
 				if (Integer.parseInt(s) > Settings.maxTier) {
 					Settings.maxTier = Integer.parseInt(s);
 				}
 			}
 		}
-		// Set the prefix
-		Settings.format = getConfig().getString("broadcast-format");
+		// Get color map
+		map = getConfig().getConfigurationSection("colors").getValues(false);
+		for (String s : map.keySet()) {
+			if (s.matches("^-?\\d+$") && map.get(s) instanceof String) {
+				Settings.colors.put(Integer.parseInt(s), ChatColor.valueOf((String) map.get(s)));
+			}
+		}
 		// Create recipe
 		Settings.recipe = new ShapedRecipe(Radio.createRadio(1));
 		Settings.recipe.shape(" g ", "bli", "rrr");
@@ -44,9 +50,9 @@ public class RadioPlugin extends JavaPlugin {
 		Settings.recipe.setIngredient('r', Material.REDSTONE);
 		getServer().addRecipe(Settings.recipe);
 		// Register command
-		getCommand("radio").setExecutor(new RadioCommand(this));
+		getCommand("radio").setExecutor(new RadioCommand());
 		// Register listener
-		getServer().getPluginManager().registerEvents(new RadioListener(this), this);
+		getServer().getPluginManager().registerEvents(new RadioListener(), this);
 		// Log status
 		getLogger().info("Done!");
 	}

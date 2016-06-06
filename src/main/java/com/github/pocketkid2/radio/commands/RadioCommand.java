@@ -37,42 +37,42 @@ public class RadioCommand implements CommandExecutor {
 
 		Player player = (Player) sender;
 		// Check that he's holding a radio
-		if (!args[0].equalsIgnoreCase("give") && !Radio.isRadio(player.getItemInHand())) {
+		if (!args[0].equalsIgnoreCase("give") && !Radio.isRadio(player.getInventory().getItemInMainHand())) {
 			player.sendMessage(ChatColor.RED + "You are not holding a radio!");
 			return true;
 		}
 
 		switch (args[0].toLowerCase()) {
-		case "frequency":
-			if (args.length < 2) {
-				sender.sendMessage(ChatColor.RED + "Not enough arguments!");
-				return false;
-			}
-			if (args.length > 2) {
-				sender.sendMessage(ChatColor.RED + "Too many arguments!");
-				return false;
-			}
-			setFrequency(player, args[1]);
-			return true;
-		case "bc":
-		case "broadcast":
-			broadcast(player, Arrays.copyOfRange(args, 1, args.length));
-			return true;
-		case "on":
-			turnOn(player);
-			return true;
-		case "off":
-			turnOff(player);
-			return true;
-		case "give":
-			if (!player.hasPermission("radio.give")) {
-				player.sendMessage(ChatColor.RED + "You don't have permission");
+			case "frequency":
+				if (args.length < 2) {
+					sender.sendMessage(ChatColor.RED + "Not enough arguments!");
+					return false;
+				}
+				if (args.length > 2) {
+					sender.sendMessage(ChatColor.RED + "Too many arguments!");
+					return false;
+				}
+				setFrequency(player, args[1]);
 				return true;
-			}
-			give(player, Arrays.copyOfRange(args, 1, args.length));
-			return true;
-		default:
-			return true;
+			case "bc":
+			case "broadcast":
+				broadcast(player, Arrays.copyOfRange(args, 1, args.length));
+				return true;
+			case "on":
+				turnOn(player);
+				return true;
+			case "off":
+				turnOff(player);
+				return true;
+			case "give":
+				if (!player.hasPermission("radio.give")) {
+					player.sendMessage(ChatColor.RED + "You don't have permission");
+					return true;
+				}
+				give(player, Arrays.copyOfRange(args, 1, args.length));
+				return true;
+			default:
+				return true;
 		}
 	}
 
@@ -86,7 +86,7 @@ public class RadioCommand implements CommandExecutor {
 
 	private void turnOff(Player player) {
 		// If the radio is on
-		ItemStack stack = player.getItemInHand();
+		ItemStack stack = player.getInventory().getItemInMainHand();
 		if (Radio.getState(stack)) {
 			// Set the item and lore
 			ItemMeta meta = stack.getItemMeta();
@@ -95,14 +95,14 @@ public class RadioCommand implements CommandExecutor {
 			lore.set(3, Radio.getStateString(false));
 			meta.setLore(lore);
 			stack.setItemMeta(meta);
-			player.setItemInHand(stack);
+			player.getInventory().setItemInMainHand(stack);
 			player.sendMessage(ChatColor.AQUA + "Turned the radio " + ChatColor.RED + "OFF");
 		}
 	}
 
 	private void turnOn(Player player) {
 		// If the radio is on
-		ItemStack stack = player.getItemInHand();
+		ItemStack stack = player.getInventory().getItemInMainHand();
 		if (!Radio.getState(stack)) {
 			// Set the item and lore
 			ItemMeta meta = stack.getItemMeta();
@@ -111,22 +111,22 @@ public class RadioCommand implements CommandExecutor {
 			lore.set(3, Radio.getStateString(true));
 			meta.setLore(lore);
 			stack.setItemMeta(meta);
-			player.setItemInHand(stack);
+			player.getInventory().setItemInMainHand(stack);
 			player.sendMessage(ChatColor.AQUA + "Turned the radio " + ChatColor.GREEN + "ON");
 		}
 	}
 
 	private void broadcast(Player player, String[] args) {
 		// Check that it's on
-		if (!Radio.getState(player.getItemInHand())) {
+		if (!Radio.getState(player.getInventory().getItemInMainHand())) {
 			player.sendMessage(ChatColor.RED + "That radio is off!");
 			return;
 		}
 		// Get the message
-		String message = String.format("&r[%s&r: %s&r] &7%s", player.getItemInHand().getItemMeta().getDisplayName(), player.getName(), String.join(" ", args));
+		String message = String.format("&r[%s&r: %s&r] &7%s", player.getInventory().getItemInMainHand().getItemMeta().getDisplayName(), player.getName(), String.join(" ", args));
 		message = ChatColor.translateAlternateColorCodes('&', message);
 		// Get the radius
-		int radius = Radio.getRadius(player.getItemInHand());
+		int radius = Radio.getRadius(player.getInventory().getItemInMainHand());
 		// Send the message
 		player.sendMessage(message);
 		for (Player p : Bukkit.getOnlinePlayers()) {
@@ -136,7 +136,7 @@ public class RadioCommand implements CommandExecutor {
 				if (player.getLocation().distance(p.getLocation()) <= radius) {
 					// Check if the player has a radio
 					for (ItemStack stack : p.getInventory().getContents()) {
-						if (Radio.isRadio(stack) && Radio.getFrequency(stack) == Radio.getFrequency(player.getItemInHand())) {
+						if (Radio.isRadio(stack) && (Radio.getFrequency(stack) == Radio.getFrequency(player.getInventory().getItemInMainHand()))) {
 							p.sendMessage(message);
 						}
 					}
@@ -158,11 +158,11 @@ public class RadioCommand implements CommandExecutor {
 			return;
 		}
 
-		ItemMeta meta = player.getItemInHand().getItemMeta();
+		ItemMeta meta = player.getInventory().getItemInMainHand().getItemMeta();
 		List<String> lore = meta.getLore();
 		lore.set(2, frequency);
 		meta.setLore(lore);
-		player.getItemInHand().setItemMeta(meta);
+		player.getInventory().getItemInMainHand().setItemMeta(meta);
 		player.sendMessage(ChatColor.AQUA + String.format("Frequency now set to %s", frequency));
 	}
 

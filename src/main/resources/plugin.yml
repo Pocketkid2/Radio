@@ -6,7 +6,8 @@ description: Broadcast messages over a frequency network!
 commands:
     radio:
         description: Main command
-        usage: /<command> [give|frequency|broadcast|on|off] [tier|number|message]
+        usage: /<command> [give|frequency|broadcast|on|off|toggle] [tier|number|message]
+        aliases: [ra]
 permissions:
     radio.use:
         description: Allows you to use a radio. This includes broadcasting, recieving, and changing values about your radio.

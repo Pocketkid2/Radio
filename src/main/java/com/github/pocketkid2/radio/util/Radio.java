@@ -21,6 +21,17 @@ public class Radio {
 		return createRadio(tier, false, 000);
 	}
 
+	/**
+	 * Creates a radio item stack with the given tier, state, and frequency
+	 *
+	 * @param tier
+	 *            1, 2, or 3
+	 * @param state
+	 *            on or off
+	 * @param frequency
+	 *            three digit frequency
+	 * @return The itemstack
+	 */
 	public static ItemStack createRadio(int tier, boolean state, int frequency) {
 		// Check that the tier exists
 		if (Settings.radiuses.containsKey(tier)) {
@@ -31,7 +42,8 @@ public class Radio {
 			// Set the name
 			meta.setDisplayName(getTitle(tier, state));
 			// Set the lores
-			List<String> lores = Arrays.asList(getTierString(tier), getRadiusString(tier), getFrequencyString(frequency), getStateString(state));
+			List<String> lores = Arrays.asList(getTierString(tier), getRadiusString(tier),
+					getFrequencyString(frequency), getStateString(state));
 			meta.setLore(lores);
 			// Return
 			stack.setItemMeta(meta);
@@ -44,6 +56,12 @@ public class Radio {
 		return Settings.colors.get(tier) + "" + (state ? ChatColor.BOLD : "") + "Radio";
 	}
 
+	/**
+	 * Checks whether the given itemstack is a radio
+	 * 
+	 * @param stack
+	 * @return
+	 */
 	public static boolean isRadio(ItemStack stack) {
 		if (stack.getType() == Material.REDSTONE_LAMP_ON || stack.getType() == Material.REDSTONE_LAMP_OFF) {
 			if (stack.hasItemMeta()) {
@@ -51,18 +69,10 @@ public class Radio {
 				if (meta.hasDisplayName() && ChatColor.stripColor(meta.getDisplayName()).equalsIgnoreCase("Radio")) {
 					if (meta.hasLore()) {
 						List<String> lores = meta.getLore();
-						if (!Radio.tier.matcher(ChatColor.stripColor(lores.get(0))).matches()) {
-							return false;
-						}
-						if (!Radio.radius.matcher(ChatColor.stripColor(lores.get(1))).matches()) {
-							return false;
-						}
-						if (!Radio.frequency.matcher(ChatColor.stripColor(lores.get(2))).matches()) {
-							return false;
-						}
-						if (!Radio.state.matcher(ChatColor.stripColor(lores.get(3))).matches()) {
-							return false;
-						}
+						if (!Radio.tier.matcher(ChatColor.stripColor(lores.get(0))).matches()) return false;
+						if (!Radio.radius.matcher(ChatColor.stripColor(lores.get(1))).matches()) return false;
+						if (!Radio.frequency.matcher(ChatColor.stripColor(lores.get(2))).matches()) return false;
+						if (!Radio.state.matcher(ChatColor.stripColor(lores.get(3))).matches()) return false;
 						return true;
 					}
 				}
@@ -113,7 +123,7 @@ public class Radio {
 
 	/**
 	 * Returns the lore string for the given tier
-	 * 
+	 *
 	 * @param tier
 	 * @return
 	 */
@@ -123,7 +133,7 @@ public class Radio {
 
 	/**
 	 * Returns the lore string for the given radius
-	 * 
+	 *
 	 * @param tier
 	 * @return
 	 */
@@ -133,7 +143,7 @@ public class Radio {
 
 	/**
 	 * Returns the lore string for the given frequency
-	 * 
+	 *
 	 * @param freq
 	 * @return
 	 */
@@ -143,7 +153,7 @@ public class Radio {
 
 	/**
 	 * Returns the lore string for the given state
-	 * 
+	 *
 	 * @param state
 	 * @return
 	 */
